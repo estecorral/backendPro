@@ -1,0 +1,17 @@
+<% include _nav.html %>
+    <h1>Resultado consulta: </h1>
+    <% anuncios.forEach( anuncio => { %>
+    <p> -------------------------------------------------------------------------------</p>
+        <h2><%= anuncio.nombre %></h2>
+        <p><% if (anuncio.venta) { %>
+        En venta</p>
+    <% } else { %>
+    <p> En búsqueda </p>
+    <% } %>
+        <p><%= anuncio.precio %>€</p>
+    <img src="http://localhost:3000/images/anuncios/<%=anuncio.foto%>" height="20%" width="20%">
+    <p><%= anuncio.tags %></p>
+  <% }) %>
+    <p> -------------------------------------------------------------------------------</p>
+  </body>
+</html>

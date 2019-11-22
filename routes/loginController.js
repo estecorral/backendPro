@@ -27,7 +27,7 @@ class LoginController {
                 return;
             }
 
-            res.redirect('/');
+            res.redirect('/anuncios');
         }catch (e) {
             console.log('ERROR: ', e);
             next(e);

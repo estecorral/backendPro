@@ -56,7 +56,7 @@ router.get('/', jwtAuth(), async (req, res, next) => {
  * Muestra listado de los diferentes tags
  */
 
-router.get('/tags', async (req, res, next) => {
+router.get('/tags', jwtAuth(), async (req, res, next) => {
    try {
        const tags = await Anuncio.distinct('tags').exec();
        res.json({ success: true, result: tags });
@@ -68,7 +68,7 @@ router.get('/tags', async (req, res, next) => {
  *  POST /anuncios
  *  Añade un anuncio nuevo
  */
-router.post('/', async (req, res, next) => {
+router.post('/', jwtAuth(), async (req, res, next) => {
    try {
        const data = req.body;
 

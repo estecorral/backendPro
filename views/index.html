@@ -1,16 +1,17 @@
 <% include _nav.html %>
-    <h1>Resultado consulta: </h1>
+    <h1><%= __('Resultado búsqueda:') %> </h1>
     <% anuncios.forEach( anuncio => { %>
     <p> -------------------------------------------------------------------------------</p>
-        <h2><%= anuncio.nombre %></h2>
+        <h2><%= __('Nombre:') %> <%= anuncio.nombre %></h2>
         <p><% if (anuncio.venta) { %>
-        En venta</p>
+            <%= __('En venta') %></p>
     <% } else { %>
-    <p> En búsqueda </p>
+    <p> <%= __('En busqueda') %> </p>
     <% } %>
-        <p><%= anuncio.precio %>€</p>
+        <p><%= __('Precio:') %> <%= anuncio.precio %>€</p>
+        <p><%= __('Foto:') %></p>
     <img src="http://localhost:3000/images/anuncios/<%=anuncio.foto%>" height="20%" width="20%">
-    <p><%= anuncio.tags %></p>
+    <p><%= __('Categorias:') %> <%= anuncio.tags %></p>
   <% }) %>
     <p> -------------------------------------------------------------------------------</p>
   </body>

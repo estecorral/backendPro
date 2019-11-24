@@ -9,10 +9,8 @@ responder.on('transform', (req, done) => {
         if(err) {
             throw err;
         }
-        img.resize(120, 120)
-            .quality(80)
+        img.resize(100, 100)
+            .quality(90)
             .write(req.destination + `/${req.filename}_thumnail.jpg`);
     });
-    console.log(req.destination, req.filename);
-    done(req.destination, req.filename);
 });

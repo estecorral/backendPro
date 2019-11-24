@@ -2,10 +2,12 @@
 
 const express = require('express');
 const router = express.Router();
+const cote = require('cote');
 
 const Anuncio = require('../../models/Anuncio');
 const jwtAuth = require('../../lib/jwtAuth');
 
+const requester = new cote.Requester({ name: 'Client' });
 /**
  *  GET /anuncios
  *  Devuelve la lista de anuncios, pudiendo limitar con ?limit=num
@@ -68,11 +70,19 @@ router.get('/tags', jwtAuth(), async (req, res, next) => {
  *  POST /anuncios
  *  Añade un anuncio nuevo
  */
-router.post('/', jwtAuth(), async (req, res, next) => {
+router.post('/',jwtAuth(), async (req, res, next) => {
    try {
        const data = req.body;
+       data.foto = req.file.filename;
 
        const anuncio = new Anuncio(data);
+
+    requester.send({
+           type: 'transform',
+           filename: req.file.filename,
+           path: req.file.path,
+           destination: req.file.destination
+       });
 
        const anuncioGuardado = await anuncio.save();
 
@@ -81,6 +91,5 @@ router.post('/', jwtAuth(), async (req, res, next) => {
        next(e);
    }
 });
-
 
 module.exports = router;

@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var multer = require('multer');
+var upload = multer({dest: 'public/images'});
 
 var app = express();
 
@@ -36,9 +38,9 @@ require('./models/Anuncio');
  * Rutas API
  */
 const loginController = require('./routes/LoginController');
-const jwtAuth = require('./lib/jwtAuth');
+//const jwtAuth = require('./lib/jwtAuth');
 
-app.use('/apiv1/anuncios', jwtAuth(), require('./routes/apiv1/anuncios'));
+app.use('/apiv1/anuncios', upload.single('foto'), require('./routes/apiv1/anuncios'));
 app.post('/apiv1/login', loginController.loginJWT);
 
 app.locals.title = 'NodePOP';

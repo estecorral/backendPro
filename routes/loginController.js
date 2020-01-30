@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 class LoginController {
     // GET /login
     index(req, res, next) {
+        res.locals.username = '';
         res.locals.email = '';
         res.locals.error = '';
         res.render('login');
@@ -14,13 +15,15 @@ class LoginController {
     // POST /login
     async post(req, res, next) {
         try {
+            const username = req.body.username;
             const email = req.body.email;
             const password = req.body.password;
 
-            const usuario = await Usuario.findOne({ email: email });
+            const usuario = await Usuario.findOne({ email: email, username: username });
             console.log(usuario);
 
             if (!usuario ||!await bcrypt.compare(password, usuario.password)) {
+                res.locals.username = username;
                 res.locals.email = email;
                 res.locals.error = res.__('Usuario o contraseña incorrectos');
                 res.render('login');
@@ -36,10 +39,11 @@ class LoginController {
 
     async loginJWT(req, res, next) {
         try {
-        const email = req.body.email;
-        const password = req.body.password;
+            const username = req.body.username;
+            const email = req.body.email;
+            const password = req.body.password;
 
-        const usuario = await Usuario.findOne({ email: email });
+            const usuario = await Usuario.findOne({ email: email });
 
             if (!usuario ||!await bcrypt.compare(password, usuario.password)) {
                 await res.json({success: false, error: res.__('Usuario o contraseña incorrectos')});

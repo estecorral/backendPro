@@ -37,10 +37,12 @@ require('./models/Anuncio');
 /**
  * Rutas API
  */
-const loginController = require('./routes/LoginController');
+const registerController = require('./routes/registerController');
+const loginController = require('./routes/loginController');
 //const jwtAuth = require('./lib/jwtAuth');
 
 app.use('/apiv1/anuncios', upload.single('foto'), require('./routes/apiv1/anuncios'));
+app.post('/apiv1/register', registerController.postRegUser);
 app.post('/apiv1/login', loginController.loginJWT);
 
 app.locals.title = 'NodePOP';

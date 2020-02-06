@@ -1,24 +1,28 @@
 {
   "anuncios": [ {
     "nombre": "Bicicleta",
+    "descripcion": "Bicicleta piñon fijo sin frenos, color amarillo muy buen estado y con garantia de un año",
     "venta": true,
     "precio": 230.15,
     "foto": "bici.jpg",
     "tags": [ "lifestyle", "motor"]
   }, {
     "nombre": "iPhone 3GS",
+    "descripcion": "Iphone 3GS de antigua generación, ya es una reliquia, pieza de coleccionista. Se encuentra en prefecto estado",
     "venta": false,
     "precio": 50.00,
     "foto": "iphone.png",
     "tags": [ "lifestyle", "mobile"]
   }, {
     "nombre": "Guitarra eléctica",
+    "descripcion": "Guitarra eléctrica negra, pastillas BMG, cuerdas ernie ball recien puestas",
     "venta": true,
     "precio": 500.00,
     "foto": "guitarra.jpg",
     "tags": [ "lifestyle" ]
   }, {
     "nombre": "Reloj deportivo",
+    "descripcion": "Relog deportivo con GPS, Glonass, pantalla a color y multiactividad (más de 50 deportes)",
     "venta": false,
     "precio": 200.00,
     "foto": "reloj.png",

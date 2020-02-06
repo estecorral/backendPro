@@ -8,6 +8,15 @@ var upload = multer({dest: 'public/images'});
 
 var app = express();
 
+app.use((req, res, next) => {
+   res.header('Access-Control-Allow-Origin', '*');
+   res.header('Access-Control-Allow-Headers', 'Origin, X-Request-With, Content-Type, Accept, Authorization');
+   if(req.method === 'OPTIONS') {
+       res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+       return res.status(200).json({});
+   }
+   next();
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');

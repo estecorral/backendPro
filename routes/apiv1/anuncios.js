@@ -12,7 +12,7 @@ const requester = new cote.Requester({ name: 'Client' });
  *  GET /anuncios
  *  Devuelve la lista de anuncios, pudiendo limitar con ?limit=num
  */
-router.get('/', jwtAuth(), async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     try {
         const nombre = req.query.nombre;
         const tags = req.query.tag;
@@ -47,7 +47,7 @@ router.get('/', jwtAuth(), async (req, res, next) => {
             filter.venta = venta;
         }
         const anuncios = await Anuncio.list({filter: filter, limit, start, sort});
-        res.json({ success: true, result: anuncios });
+        await res.json({ success: true, result: anuncios });
     }catch (e) {
         next(e);
     }
@@ -58,10 +58,10 @@ router.get('/', jwtAuth(), async (req, res, next) => {
  * Muestra listado de los diferentes tags
  */
 
-router.get('/tags', jwtAuth(), async (req, res, next) => {
+router.get('/tags', async (req, res, next) => {
    try {
        const tags = await Anuncio.distinct('tags').exec();
-       res.json({ success: true, result: tags });
+       await res.json({ success: true, result: tags });
    } catch (e) {
        next(e);
    }
@@ -86,7 +86,7 @@ router.post('/',jwtAuth(), async (req, res, next) => {
 
        const anuncioGuardado = await anuncio.save();
 
-       res.json({ success: true, result: anuncioGuardado });
+       await res.json({ success: true, result: anuncioGuardado });
    } catch (e) {
        next(e);
    }

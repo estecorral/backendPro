@@ -16,7 +16,7 @@ class RegisterController {
                 return;
             }
                 const regUser = await usuario.save();
-                res.json({ success: true, result: regUser });
+                await res.json({ success: true, result: regUser });
         }catch (e) {
             console.log('ERROR: ', e);
             next(e);

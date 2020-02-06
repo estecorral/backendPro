@@ -12,38 +12,12 @@ class LoginController {
         res.render('login');
     }
 
-    // POST /login
-    async post(req, res, next) {
-        try {
-            const username = req.body.username;
-            const email = req.body.email;
-            const password = req.body.password;
-
-            const usuario = await Usuario.findOne({ email: email, username: username });
-            console.log(usuario);
-
-            if (!usuario ||!await bcrypt.compare(password, usuario.password)) {
-                res.locals.username = username;
-                res.locals.email = email;
-                res.locals.error = res.__('Usuario o contraseña incorrectos');
-                res.render('login');
-                return;
-            }
-
-            res.redirect('/anuncios');
-        }catch (e) {
-            console.log('ERROR: ', e);
-            next(e);
-        }
-    }
-
     async loginJWT(req, res, next) {
         try {
             const username = req.body.username;
-            const email = req.body.email;
             const password = req.body.password;
 
-            const usuario = await Usuario.findOne({ email: email });
+            const usuario = await Usuario.findOne({ username: username });
 
             if (!usuario ||!await bcrypt.compare(password, usuario.password)) {
                 await res.json({success: false, error: res.__('Usuario o contraseña incorrectos')});
@@ -54,7 +28,7 @@ class LoginController {
                 expiresIn: '1d'
             });
 
-            res.json({success: true, tocken: tocken});
+            await res.json({success: true, tocken: tocken});
 
         } catch (e) {
             next(e);

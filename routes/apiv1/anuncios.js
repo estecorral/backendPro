@@ -59,6 +59,21 @@ router.get('/', async (req, res, next) => {
     }
 });
 
+/**
+ * GET /anuncios/:id
+ * Recupera un anuncios por el id
+ */
+router.get('/:id', async (req, res, next) => {
+    try {
+        const id = req.param('id');
+        const ad = await Anuncio.findById(id);
+        console.log(ad);
+        await res.json({ success: true, result: ad });
+    } catch (e) {
+        next(e);
+    }
+});
+
 
 /**
  * GET /tags

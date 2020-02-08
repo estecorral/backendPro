@@ -16,10 +16,14 @@ const anuncioSchema = mongoose.Schema({
 
 anuncioSchema.statics.list = function ({filter, limit, start, sort}) {
     const query = Anuncio.find(filter);
-    console.log(filter);
     query.limit(limit);
     query.skip(start);
     query.sort(sort);
+    return query.exec();
+};
+
+anuncioSchema.statics.getAd = function (id) {
+    const query = Anuncio.find(id);
     return query.exec();
 };
 

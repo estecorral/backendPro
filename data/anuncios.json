@@ -3,7 +3,7 @@
     "nombre": "Bicicleta",
     "descripcion": "Bicicleta piñon fijo sin frenos, color amarillo muy buen estado y con garantia de un año",
     "venta": true,
-    "precio": 230.15,
+    "precio": 230.00,
     "foto": "bici.jpg",
     "tags": [ "lifestyle", "motor"]
   }, {

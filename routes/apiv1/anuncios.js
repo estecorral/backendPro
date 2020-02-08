@@ -24,34 +24,41 @@ router.get('/', async (req, res, next) => {
 
         const filter = {};
 
-      if(nombre) {
+        if(nombre) {
             filter.nombre = new RegExp('^' + nombre, "i");
         }
-         if (tags) {
-            filter.tags = {'$all': [tags]};
-        }
-        if (typeof precio !== 'undefined') {
-              if (precio[0] === '-') {
-                  filter.precio = {'$lte': Math.abs(parseInt(precio))};
-              } else if (precio[precio.length - 1] === '-'){
-                  filter.precio = {'$gte': parseInt(precio)};
-              } else if (precio.indexOf('-') > 0 && precio.indexOf('-') < precio.length - 1){
-                  let precio1 = precio.substring(0, precio.indexOf('-'));
-                  let precio2 = precio.substring(precio.indexOf('-') + 1 , precio.length);
-                  filter.precio = {'$gte': parseInt(precio1), '$lte': parseInt(precio2)};
-              } else {
-                filter.precio = precio;
+        if (tags) {
+            if (tags !== 'all') {
+                filter.tags = {'$all': [tags]};
             }
         }
-        if(venta) {
-            filter.venta = venta;
+        if (typeof precio !== 'undefined') {
+            if (precio !== '') {
+                if (precio[0] === '-') {
+                    filter.precio = {'$lte': Math.abs(parseInt(precio))};
+                } else if (precio[precio.length - 1] === '-'){
+                    filter.precio = {'$gte': parseInt(precio)};
+                } else if (precio.indexOf('-') > 0 && precio.indexOf('-') < precio.length - 1){
+                    let precio1 = precio.substring(0, precio.indexOf('-'));
+                    let precio2 = precio.substring(precio.indexOf('-') + 1 , precio.length);
+                    filter.precio = {'$gte': parseInt(precio1), '$lte': parseInt(precio2)};
+                } else {
+                    filter.precio = precio;
+                }
+            }
+        }
+        if(typeof venta !== 'undefined') {
+            if (venta !== '') {
+                filter.venta = venta;
+            }
         }
         const anuncios = await Anuncio.list({filter: filter, limit, start, sort});
-        await res.json({ success: true, result: anuncios });
+        res.json({ success: true, result: anuncios });
     }catch (e) {
         next(e);
     }
 });
+
 
 /**
  * GET /tags

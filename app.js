@@ -52,6 +52,7 @@ const loginController = require('./routes/loginController');
 
 app.use('/apiv1/anuncios', upload.single('foto'), require('./routes/apiv1/anuncios'));
 app.post('/apiv1/register', registerController.postRegUser);
+app.delete('/apiv1/register/:id', registerController.deleteUser);
 app.post('/apiv1/login', loginController.loginJWT);
 
 app.locals.title = 'NodePOP';

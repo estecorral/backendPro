@@ -28,7 +28,7 @@ class LoginController {
                 expiresIn: '1d'
             });
 
-            await res.json({success: true, session: {token: token, username: usuario.username, email: usuario.email }});
+            await res.json({success: true, session: {token: token, username: usuario.username, email: usuario.email, id: usuario._id }});
 
         } catch (e) {
             next(e);

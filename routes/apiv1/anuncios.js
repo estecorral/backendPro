@@ -15,6 +15,7 @@ const requester = new cote.Requester({ name: 'Client' });
 router.get('/', async (req, res, next) => {
     try {
         const nombre = req.query.nombre;
+        const usuario =  req.query.usuario;
         const tags = req.query.tag;
         const precio = req.query.precio;
         const venta = req.query.venta;
@@ -23,6 +24,10 @@ router.get('/', async (req, res, next) => {
         const sort = req.query.sort;
 
         const filter = {};
+
+        if(usuario) {
+            filter.usuario = usuario;
+        }
 
         if(nombre) {
             filter.nombre = new RegExp('^' + nombre, "i");
@@ -60,20 +65,18 @@ router.get('/', async (req, res, next) => {
 });
 
 /**
- * GET /anuncios/:id
+ * GET /:id
  * Recupera un anuncios por el id
  */
 router.get('/:id', async (req, res, next) => {
     try {
         const id = req.param('id');
         const ad = await Anuncio.findById(id);
-        console.log(ad);
         await res.json({ success: true, result: ad });
     } catch (e) {
         next(e);
     }
 });
-
 
 /**
  * GET /tags

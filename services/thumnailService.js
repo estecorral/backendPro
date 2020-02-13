@@ -9,7 +9,7 @@ responder.on('transform', (req, done) => {
         if(err) {
             throw err;
         }
-        img.resize(100, 100)
+        img.scaleToFit(100, 100)
             .quality(90)
             .write(req.destination + `/${req.filename}_thumnail.jpg`);
     });

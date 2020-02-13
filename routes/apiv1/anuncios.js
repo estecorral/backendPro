@@ -22,6 +22,7 @@ router.get('/', async (req, res, next) => {
         const limit = parseInt(req.query.limit);
         const start = parseInt(req.query.start);
         const sort = req.query.sort;
+        console.log(usuario);
 
         const filter = {};
 
@@ -71,7 +72,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
     try {
         const id = req.param('id');
-        const ad = await Anuncio.findById(id);
+        const ad = await Anuncio.findById(id).populate('autor', 'username');
         await res.json({ success: true, result: ad });
     } catch (e) {
         next(e);
@@ -96,11 +97,11 @@ router.get('/tags', async (req, res, next) => {
  *  Añade un anuncio nuevo
  */
 router.post('/',jwtAuth(), async (req, res, next) => {
-   try {
-       const data = req.body;
-       data.foto = req.file.filename;
-
-       const anuncio = new Anuncio(data);
+    try {
+      const data = req.body;
+      data.date = new Date();
+      data.foto = req.file.filename;
+      const anuncio = new Anuncio(data);
 
     requester.send({
            type: 'transform',
@@ -111,7 +112,7 @@ router.post('/',jwtAuth(), async (req, res, next) => {
 
        const anuncioGuardado = await anuncio.save();
 
-       await res.json({ success: true, result: anuncioGuardado });
+       res.json({ success: true, result: anuncioGuardado });
    } catch (e) {
        next(e);
    }

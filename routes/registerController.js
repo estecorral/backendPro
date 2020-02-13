@@ -28,8 +28,9 @@ class RegisterController {
     async deleteUser(req, res, next) {
         try {
             const userId = req.param('id');
-            const borrado = await Usuario.deleteOne({_id: userId});
-            res.json({ success: true, result: borrado });
+            await Usuario.deleteOne({_id: userId});
+            await Anuncio.deleteMany({autor: { _id: userId}});
+            res.json({ success: true });
         } catch (e) {
             console.log('ERROR: ', e);
             next(e);
@@ -39,9 +40,25 @@ class RegisterController {
     //PUT actualizar datos usuario
     async updateUser(req, res, next) {
         try {
-            let data = req.body;
-            console.log(data);
-            // const updateUser = await Usuario.
+            const userId = req.param('id');
+            const username = req.body.username;
+            const email = req.body.email;
+            const usuarioRegMail = await Usuario.findOne({ email: email });
+            const usuarioRegUsername = await Usuario.findOne({ username: username});
+            if (usuarioRegUsername) {
+                if(typeof usuarioRegUsername._id !== userId) {
+                    res.json({success: false, error: 'El username ya esta en uso'});
+                    return;
+                }
+            }
+            if (usuarioRegMail) {
+                if(usuarioRegMail._id != userId) {
+                    res.json({success: false, error: 'El email ya esta en uso'});
+                    return;
+                }
+            }
+            const usuario = await Usuario.findOneAndUpdate({_id: userId}, {username: username, email: email});
+            res.json({success: true, result: usuario});
         }catch (e) {
             console.log('ERROR: ', e);
             next(e);

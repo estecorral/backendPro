@@ -10,7 +10,7 @@ var app = express();
 
 app.use((req, res, next) => {
    res.header('Access-Control-Allow-Origin', '*');
-   res.header('Access-Control-Allow-Headers', 'Origin, X-Request-With, Content-Type, Accept, Authorization');
+   res.header('Access-Control-Allow-Headers', 'Origin, X-Request-With, Content-Type, Accept, Authorization, multipart/form-data');
    if(req.method === 'OPTIONS') {
        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
        return res.status(200).json({});
@@ -53,6 +53,7 @@ const loginController = require('./routes/loginController');
 app.use('/apiv1/anuncios', upload.single('foto'), require('./routes/apiv1/anuncios'));
 app.post('/apiv1/register', registerController.postRegUser);
 app.delete('/apiv1/register/:id', registerController.deleteUser);
+app.put('/apiv1/register/:id', registerController.updateUser);
 app.post('/apiv1/login', loginController.loginJWT);
 
 app.locals.title = 'NodePOP';

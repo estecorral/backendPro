@@ -5,18 +5,20 @@ const mongoose = require('mongoose');
 // definimos un esquema
 const anuncioSchema = mongoose.Schema({
     nombre: { type: String, index: true },
-    venta: { type: Boolean, index: true },
+    venta: Boolean,
     precio: { type: Number, index: true },
     descripcion: String,
     foto: String,
     tags: [String],
     usuario: String,
+    date: Date,
+    autor: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }
 }, { collection : 'anuncios' });
 
 
 
 anuncioSchema.statics.list = function ({filter, limit, start, sort}) {
-    const query = Anuncio.find(filter);
+    const query = Anuncio.find(filter).populate('autor', 'username');
     query.limit(limit);
     query.skip(start);
     query.sort(sort);
@@ -24,7 +26,7 @@ anuncioSchema.statics.list = function ({filter, limit, start, sort}) {
 };
 
 anuncioSchema.statics.getAd = function (id) {
-    const query = Anuncio.find(id);
+    const query = Anuncio.find(id).populate('autor', 'username').exec();
     return query.exec();
 };
 

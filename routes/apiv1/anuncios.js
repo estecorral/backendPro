@@ -118,4 +118,20 @@ router.post('/',jwtAuth(), async (req, res, next) => {
    }
 });
 
+/**
+ *  /anuncios
+ *  Delete Anuncio
+ */
+router.delete('/delete/:id', jwtAuth(), async (req, res, next) => {
+    try {
+        const adId = req.param('id');
+        await Anuncio.deleteOne({_id: adId});
+        res.json({ success: true });
+    } catch (e) {
+        console.log('ERROR: ', e);
+        next(e);
+    }
+});
+
+
 module.exports = router;

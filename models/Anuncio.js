@@ -21,7 +21,12 @@ anuncioSchema.statics.list = function ({filter, limit, start, sort}) {
     const query = Anuncio.find(filter).populate('autor', 'username');
     query.limit(limit);
     query.skip(start);
-    query.sort(sort);
+    console.log(sort);
+    if (!sort) {
+        query.sort({date: -1});
+    } else {
+        query.sort(sort);
+    }
     return query.exec();
 };
 

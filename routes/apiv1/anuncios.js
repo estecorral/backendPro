@@ -22,7 +22,6 @@ router.get('/', async (req, res, next) => {
         const limit = parseInt(req.query.limit);
         const start = parseInt(req.query.start);
         const sort = req.query.sort;
-        console.log(usuario);
 
         const filter = {};
 
@@ -119,7 +118,7 @@ router.post('/',jwtAuth(), async (req, res, next) => {
 });
 
 /**
- *  /anuncios
+ *  /anuncios/delete/:id
  *  Delete Anuncio
  */
 router.delete('/delete/:id', jwtAuth(), async (req, res, next) => {
@@ -131,6 +130,33 @@ router.delete('/delete/:id', jwtAuth(), async (req, res, next) => {
         console.log('ERROR: ', e);
         next(e);
     }
+});
+
+/**
+ * /anuncios/update
+ * update anuncio
+ */
+router.put('/update/:id', jwtAuth(), async (req, res, next) => {
+   try {
+       const adId = req.param('id');
+       const ad = req.body;
+       let tags = [];
+       req.body.tags.map(tag => {
+            tags.push(tag.value);
+       });
+       await Anuncio.findByIdAndUpdate(adId,
+           {
+               nombre: ad.nombre,
+               descripcion: ad.descripcion,
+               precio: ad.precio,
+               tags: tags,
+               venta: ad.venta.value,
+                });
+       res.json({ success: true });
+   } catch (e) {
+       console.log('ERROR: ', e);
+       next(e);
+   }
 });
 
 

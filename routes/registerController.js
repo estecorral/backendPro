@@ -64,6 +64,49 @@ class RegisterController {
             next(e);
         }
     }
+
+    //PUT actualiza favoritos usuario
+    async favorites(req, res, next) {
+        try {
+            const anuncio = req.body;
+            const userId = req.param('id');
+            await Usuario.update({_id: userId}, {$push: {favoritos: anuncio._id}});
+            const favs = await Usuario.findOne({_id:userId}).populate('favoritos').exec();
+            res.json({success: true, favorites: favs});
+        }catch (e) {
+            console.log('ERROR: ', e);
+            next(e);
+        }
+    }
+
+    //GET recupera los favoritos de un usuario registrado
+    async getAllFavs(req, res, next) {
+        try {
+            const userId = req.param('id');
+            const favs = await Usuario.findOne({_id:userId}).populate('favoritos').exec();
+            res.json({success: true, favorites: favs});
+        }catch (e) {
+            console.log('ERROR: ', e);
+            next(e);
+        }
+    }
+
+    //DELETE favorite de un usuario
+    async deleteFavorite(req, res, next) {
+        console.log('delete');
+        try {
+            const anuncio = req.body;
+            const userId = req.param('id');
+            await Usuario.updateOne({_id: userId}, {$pull: {favoritos: anuncio._id}});
+            const favs = await Usuario.findOne({_id:userId}).populate('favoritos').exec();
+            res.json({success: true, favorites: favs});
+        }catch (e) {
+            console.log('ERROR: ', e);
+            next(e);
+        }
+    }
+
 }
+
 
 module.exports = new RegisterController();

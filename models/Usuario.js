@@ -8,6 +8,7 @@ const usuarioSchema = mongoose.Schema({
     username: { type: String, unique: true },
     email: { type: String, unique: true },
     password: String,
+    favoritos: [{type: mongoose.Schema.Types.ObjectId, ref: 'Anuncio'}],
 }, { collection : 'usuarios' });
 
 usuarioSchema.statics.hashPassword = function (plainPass) {

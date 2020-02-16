@@ -17,7 +17,7 @@ class LoginController {
             const username = req.body.username;
             const password = req.body.password;
 
-            const usuario = await Usuario.findOne({ username: username });
+            const usuario = await Usuario.findOne({ username: username }).populate('favoritos');
 
             if (!usuario ||!await bcrypt.compare(password, usuario.password)) {
                 await res.json({success: false, error: res.__('Usuario o contraseña incorrectos')});
@@ -28,7 +28,7 @@ class LoginController {
                 expiresIn: '1d'
             });
 
-            await res.json({success: true, session: {token: token, username: usuario.username, email: usuario.email, id: usuario._id }});
+            await res.json({success: true, session: {token: token, username: usuario.username, email: usuario.email, id: usuario._id, favoritos: usuario.favoritos }});
 
         } catch (e) {
             next(e);

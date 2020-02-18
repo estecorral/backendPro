@@ -49,7 +49,7 @@ require('./models/Anuncio');
 const registerController = require('./routes/registerController');
 const loginController = require('./routes/loginController');
 const mailController = require('./routes/mailController');
-//const jwtAuth = require('./lib/jwtAuth');
+const jwtAuth = require('./lib/jwtAuth');
 
 app.use('/apiv1/anuncios', upload.single('foto'), require('./routes/apiv1/anuncios'));
 app.post('/apiv1/register', registerController.postRegUser);
@@ -58,6 +58,7 @@ app.put('/apiv1/register/:id', registerController.updateUser);
 app.put('/apiv1/register/favorite/:id', registerController.favorites);
 app.put('/apiv1/register/delete/:id', registerController.deleteFavorite);
 app.get('/apiv1/register/favorites/:id', registerController.getAllFavs);
+app.put('/apiv1/reset/:token', jwtAuth(), registerController.updatePassword);
 app.post('/apiv1/resetpass', mailController.resetPassword);
 app.post('/apiv1/login', loginController.loginJWT);
 

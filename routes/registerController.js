@@ -7,7 +7,7 @@ class RegisterController {
     async postRegUser(req, res, next) {
         try{
             let data = req.body;
-            const password = await Usuario.hashPassword(data.password);;
+            const password = await Usuario.hashPassword(data.password);
             data.password = password;
             const usuario = new Usuario(data);
             const usuarioRegMail = await Usuario.findOne({ email: data.email });
@@ -106,6 +106,19 @@ class RegisterController {
         }
     }
 
+    //UPDATE actualiza la contraseña de un usuario
+    async updatePassword(req, res, next) {
+        try {
+            const email = req.body.email;
+            const password = await Usuario.hashPassword(req.body.password);
+            console.log(email, password);
+            await Usuario.update({email: email}, {password: password});
+            res.json({success: true});
+        }catch (e) {
+            console.log('ERROR: ', e);
+            next(e);
+        }
+    }
 }
 
 

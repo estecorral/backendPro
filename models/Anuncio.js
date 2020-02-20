@@ -12,6 +12,8 @@ const anuncioSchema = mongoose.Schema({
     tags: [String],
     usuario: String,
     date: Date,
+    vendido: Boolean,
+    reservado: Boolean,
     autor: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }
 }, { collection : 'anuncios' });
 

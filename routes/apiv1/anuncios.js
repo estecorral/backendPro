@@ -58,7 +58,8 @@ router.get('/', async (req, res, next) => {
             }
         }
         const anuncios = await Anuncio.list({filter: filter, limit, start, sort});
-        res.json({ success: true, result: anuncios });
+        // const count = await Anuncio.list({filter: filter});
+        res.json({ success: true, result: anuncios});
     }catch (e) {
         next(e);
     }
@@ -159,5 +160,38 @@ router.put('/update/:id', jwtAuth(), async (req, res, next) => {
    }
 });
 
+/**
+ * update anucio como vendido/comprado
+ */
+router.put('/update/vendido/:id', jwtAuth(), async (req, res, next) => {
+    try{
+        const id = req.param('id');
+        const vendido = req.body.vendido;
+        const ad = await Anuncio.findOneAndUpdate({ _id: id}, {vendido: vendido});
+        const ads = await Anuncio.find({autor: ad.autor._id}).populate('autor', 'username');
+        ads.reverse();
+        res.json({ success: true, ads: ads });
+    } catch (e) {
+        console.log('ERROR: ', e);
+        next(e);
+    }
+});
+
+/**
+ * update anucio como reservado
+ */
+router.put('/update/reservado/:id', jwtAuth(), async (req, res, next) => {
+    try{
+        const id = req.param('id');
+        const reservado = req.body.reservado;
+        const ad = await Anuncio.findOneAndUpdate({ _id: id}, {reservado: reservado});
+        const ads = await Anuncio.find({autor: ad.autor._id}).populate('autor', 'username');
+        ads.reverse();
+        res.json({ success: true, ads: ads });
+    } catch (e) {
+        console.log('ERROR: ', e);
+        next(e);
+    }
+});
 
 module.exports = router;

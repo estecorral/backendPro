@@ -8,9 +8,9 @@ class MailController {
     async resetPassword(req, res, next) {
         try {
         const email = req.body.email;
-        const usuario = await Usuario.findOne({ email: email });
+        const usuario = await Usuario.findOne({ email: email })
         if(!usuario) {
-            res.json({success: false, error: 'No existe ningun usuario registrado con ese email'});
+            res.json({success: false, error: 'No existe ningun usuario registrado con el email: ' + email});
             return;
         }
             const token = jwt.sign({ _id: usuario._id }, process.env.JWT_SECRET, {

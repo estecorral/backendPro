@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const cote = require('cote');
 
+const Usuario = require('../../models/Usuario');
 const Anuncio = require('../../models/Anuncio');
 const jwtAuth = require('../../lib/jwtAuth');
 
@@ -126,6 +127,7 @@ router.delete('/delete/:id', jwtAuth(), async (req, res, next) => {
     try {
         const adId = req.param('id');
         await Anuncio.deleteOne({_id: adId});
+        await Usuario.updateMany( {}, { $pullAll: {favs: [adId] } });
         res.json({ success: true });
     } catch (e) {
         console.log('ERROR: ', e);

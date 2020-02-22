@@ -2,6 +2,7 @@
 const nodemailer = require('nodemailer');
 const Usuario = require('../models/Usuario');
 const jwt = require('jsonwebtoken');
+const mailgun = require("nodemailer-mailgun-transport");
 
 class MailController {
     // POST reset password
@@ -17,14 +18,14 @@ class MailController {
 
                 expiresIn: '1h'
             });
-            var transport = nodemailer.createTransport({
-                host: "smtp.mailtrap.io",
-                port: 2525,
+            const auth = {
                 auth: {
-                    user: "5b0876c28dedf6",
-                    pass: process.env.EMAIL_PASS
+                    user: '',
+                    domain: ''
                 }
-            });
+            };
+
+            let transport = nodemailer.createTransport(mailgun(auth));
 
             const mailOptions = {
                 from: 'no-reply@wallakeep.es',

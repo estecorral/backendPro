@@ -20,7 +20,7 @@ class MailController {
             });
             const auth = {
                 auth: {
-                    user: '',
+                    api_key: '',
                     domain: ''
                 }
             };
